@@ -1,5 +1,8 @@
 # nurdism/rust:latest
 
+Features:
+  Rcon wrapper, auto updater, kills server when update detected
+
 ENV
 ```bash
 # Default launch args, not recomended to change this, use ADDITIONAL_ARGS to extend
