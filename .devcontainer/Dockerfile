@@ -12,8 +12,8 @@ ENV DENO_DIR=${DENO_INSTALL}/.cache/deno
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        apt-utils git openssh-client less procps wget nano jq htop lsb-release ca-certificates iproute2 unzip curl tar jq locales \
-        libgcc1 libsdl1.2debian apt-transport-https dialog gnupg2 libc6 libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust0 libstdc++6 zlib1g \
+        apt-utils git openssh-client less procps wget nano jq htop lsb-release \
+        apt-transport-https dialog gnupg2 libc6 libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust0 libstdc++6 zlib1g \
     #
     # install dotnet sdk
     && curl -sL https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb > packages-microsoft-prod.deb \
@@ -23,10 +23,8 @@ RUN apt-get update \
     && apt-get install -y dotnet-sdk-3.1\
     #
     # steam dependencies
-    && dpkg --add-architecture i386 \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-        lib32gcc1 lib32stdc++6 lib32z1 libcurl4-gnutls-dev:i386 libcurl4:i386 libtinfo5:i386 libncurses5:i386 libcurl3-gnutls:i386 \
+    && apt-get install -y --no-install-recommends ca-certificates iproute2 unzip curl tar jq locales \
+    && apt-get install -y --no-install-recommends libsqlite3-0 lib32gcc1 lib32stdc++6 lib32z1 libgcc1 libcurl4-gnutls-dev:i386 libcurl4:i386 libtinfo5:i386 libncurses5:i386 libcurl3-gnutls:i386 libsdl1.2debian \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
     #
     # create user
@@ -35,6 +33,8 @@ RUN apt-get update \
     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
+    #
+    # install deno
     && mkdir -p /deno \
     && chown -R $USERNAME /deno \
     && curl -fsSL https://deno.land/x/install/install.sh | sh \

@@ -1,9 +1,5 @@
 #!/bin/bash
 
-DOCKER_USER=user
-DOCKER_KEY=pass
-DOCKER_APP=nurdism/rust
-
 if [ -f .env ]; then
   source <(grep -v '^#' .env | sed -E 's|^(.+)=(.*)$|: ${\1=\2}; export \1|g')
 fi
