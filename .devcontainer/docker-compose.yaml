@@ -1,0 +1,28 @@
+version: '2.0'
+services:
+  mariadb:
+    image: mariadb
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=7JCWWfzWJTsGecEd
+  rust:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USERNAME: "vscode"
+        USER_UID: "1000"
+        USER_GID: "1000"
+    ports:
+      - "28015:28015"
+      - "28015:28015/udp"
+      - "28016:28016"
+      - "28016:28016/udp"
+    volumes:
+      - ./:/home/vscode/server
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    command: "/bin/sh -c \"while sleep 1000; do :; done\""
